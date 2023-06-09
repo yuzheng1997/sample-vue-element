@@ -1,8 +1,9 @@
-import { defineConfig, rollup } from "rollup";
+import { rollup } from "rollup";
 import VuePlugin from "@vitejs/plugin-vue";
 import gs = require("fast-glob");
 import { INPUT_PATH, OUT_DIR } from "../config";
 import { resolve } from "path";
+import { babel } from "@rollup/plugin-babel";
 
 /**
  * 获取需要打包的文件
@@ -21,7 +22,16 @@ export const buildModules = async () => {
 	const inputs = await getInputs();
 	const bundle = await rollup({
 		input: inputs,
-		plugins: [VuePlugin],
+		plugins: [
+			
+			VuePlugin(),
+			babel({
+				extensions: [".ts", ".tsx", ".jsx", ".vue"],
+				presets: [["@babel/preset-typescript"]],
+				plugins: ["@vue/babel-plugin-jsx"],
+				babelHelpers: "bundled",
+			}),
+		],
 	});
 
 	await bundle.write({
