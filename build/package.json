@@ -1,0 +1,25 @@
+{
+  "name": "build",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "gulp --task gulpfile.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/gulp": "^4.0.11",
+    "@vitejs/plugin-vue": "^4.2.3",
+    "fast-glob": "^3.2.12",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "rollup": "^3.24.0",
+    "rollup-plugin-typescript2": "^0.34.1",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.3",
+    "typescript": "^5.1.3"
+  }
+}
