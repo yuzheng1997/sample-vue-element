@@ -10,12 +10,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.2.5"
   },
   "dependencies": {
     "@sample-vue-element/components": "workspace:^1.0.0",
     "@sample-vue-element/utils": "workspace:^1.0.0",
     "element-plus": "^2.3.6",
+    "lodash-es": "^4.17.21",
     "tslib": "^2.5.3",
     "typescript": "^5.1.3",
     "vue": "^3.2.36"
