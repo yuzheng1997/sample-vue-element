@@ -11,3 +11,6 @@ declare type inferPropType<T> = [T] extends [ObjectConstructor]
 declare type inferInstance<T> = {
 	-readonly [K in keyof T]?: inferPropType<T[K]>;
 };
+
+declare type NullableRecord<T = any> = Record<string, T> | null;
+declare type Recordable<T = any> = Record<string, T>;
