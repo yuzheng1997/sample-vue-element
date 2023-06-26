@@ -12,7 +12,7 @@ export default defineComponent({
 		return () => (
 			<ElRow {...rowProps}>
 				{{
-					default: () => createColRender(slots, props),
+					default: createColRender(slots, props),
 				}}
 			</ElRow>
 		);

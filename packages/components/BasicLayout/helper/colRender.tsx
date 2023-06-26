@@ -1,5 +1,10 @@
 import { Component, Slots, VNode, mergeProps } from "vue";
-import { _isPlainObject, getProps, isIfShow, isShow } from "@sample-vue-element/utils/helper";
+import {
+	_isPlainObject,
+	getProps,
+	isIfShow,
+	isShow,
+} from "@sample-vue-element/utils/helper";
 import { ElCol } from "element-plus";
 import { colPropKeys } from "../props";
 import type { BasicLayoutPorps } from "../types/index";
@@ -33,15 +38,18 @@ const getColProps = (
  * 获取node，如果没有使用el-col，则包装
  * @param node
  */
-const getColRender = (node: VNode, rowProps: BasicLayoutPorps): VNode => {
+const getColRender = (
+	node: VNode,
+	rowProps: BasicLayoutPorps
+): VNode | undefined => {
 	const { props, type } = node;
-	console.log(node, 'node')
-	isIfShow(node)
-	isShow(node)
 	// 已经被el-col包裹，直接返回
 	if (_isPlainObject(type) && (type as Component).name === "ElCol") {
 		return node;
 	}
+	console.log(isIfShow(node), isShow(node), '123')
+	if (!isIfShow(node)) return;
+	if (!isShow(node)) return;
 	// 获取props
 	const colProps = getColProps(props, rowProps);
 	// 使用el-col包装
@@ -57,5 +65,5 @@ const getColRender = (node: VNode, rowProps: BasicLayoutPorps): VNode => {
 export const createColRender = (slots: Slots, props: BasicLayoutPorps) => {
 	const nodes = slots.default?.();
 	if (!nodes) return [];
-	return nodes.map((node) => getColRender(node, props));
+	return () => nodes.map((node) => getColRender(node, props)).filter(Boolean);
 };

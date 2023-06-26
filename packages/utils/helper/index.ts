@@ -5,11 +5,13 @@ export * from "./typeValide";
 
 export const isIfShow = (node: VNode) => {
 	const { children, type } = node;
-	return children === "v-if" && type.toString() === "Symbol(v-cmt)";
+	return !(children === "v-if" && type.toString() === "Symbol(v-cmt)");
 };
 export const isShow = (node: VNode) => {
-	const { el, dirs } = node;
-	console.log(((dirs as any) || [])[0]?.updated, "el");
-	if (!el) return false;
-	return (el as HTMLElement).style.display;
+	const { dirs } = node;
+	const vShowDir = (dirs || []).find(item => item.modifiers.isVshow)
+	// 没有v-show 直接返回true
+	if (!vShowDir) return true 
+	const { value } = vShowDir
+	return value
 };

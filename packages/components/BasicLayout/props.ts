@@ -6,10 +6,10 @@ export const basicProps = {
 	...rowProps,
 	colSpan: {
 		type: [
-			Object as PropType<ColSpan>,
+			Object,
 			Number,
-			Array<number> as PropType<number[]>,
-		],
+			Array,
+		] as PropType<ColSpan>,
 	},
 };
 
