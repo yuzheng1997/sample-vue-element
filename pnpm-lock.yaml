@@ -61,10 +61,14 @@ importers:
     specifiers:
       '@sample-vue-element/utils': workspace:^1.0.0
       '@types/lodash-es': ^4.17.7
+      '@vue/runtime-core': ^3.3.4
+      '@vue/shared': ^3.3.4
       lodash-es: ^4.17.21
       vue: ^3.2.36
     dependencies:
       '@sample-vue-element/utils': link:../utils
+      '@vue/runtime-core': 3.3.4
+      '@vue/shared': 3.3.4
       lodash-es: 4.17.21
       vue: 3.2.36
     devDependencies:

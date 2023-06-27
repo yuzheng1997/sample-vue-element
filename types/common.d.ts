@@ -14,3 +14,5 @@ declare type inferInstance<T> = {
 
 declare type NullableRecord<T = any> = Record<string, T> | null;
 declare type Recordable<T = any> = Record<string, T>;
+
+declare type FunctionAble<T = any> = (...args) => T | T

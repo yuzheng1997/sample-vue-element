@@ -7,15 +7,15 @@ import {
 } from "@sample-vue-element/utils/helper";
 import { ElCol } from "element-plus";
 import { colPropKeys } from "../props";
-import type { BasicLayoutPorps } from "../types/index";
 import { isNumber } from "lodash-es";
+import { BasicLayoutPorps } from "@sample-vue-element/types";
 
 /**
  * 获取Col所需要的属性
  * 合并colProps
  * @param props VNode上的属性
  */
-const colSize = ["xs", "sm", "sm", "lg", "xl"];
+const colSize = ["xs", "sm", "md", "lg", "xl"];
 const getColProps = (
 	props: NullableRecord,
 	rowProps: BasicLayoutPorps
@@ -47,7 +47,6 @@ const getColRender = (
 	if (_isPlainObject(type) && (type as Component).name === "ElCol") {
 		return node;
 	}
-	console.log(isIfShow(node), isShow(node), '123')
 	if (!isIfShow(node)) return;
 	if (!isShow(node)) return;
 	// 获取props

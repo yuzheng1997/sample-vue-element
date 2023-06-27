@@ -2,6 +2,7 @@
   "name": "@sample-vue-element/components",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +12,8 @@
   "license": "ISC",
   "dependencies": {
     "@sample-vue-element/utils": "workspace:^1.0.0",
+    "@vue/runtime-core": "^3.3.4",
+    "@vue/shared": "^3.3.4",
     "lodash-es": "^4.17.21",
     "vue": "^3.2.36"
   },
