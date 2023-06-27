@@ -1,5 +1,5 @@
 import { ColSpan } from "@sample-vue-element/types";
-import { Schemas } from "@sample-vue-element/types/basicForm";
+import { Schema } from "@sample-vue-element/types/basicForm";
 import { formProps } from "element-plus";
 import { PropType } from "vue";
 
@@ -14,10 +14,11 @@ export const basicProps = {
 		default: ":",
 	},
 	schemas: {
-		type: Object as PropType<Schemas>,
+		type: Array as PropType<Schema[]>,
 	},
 	colSpan: {
 		type: [Object, Number, Array] as PropType<ColSpan>,
+		default: [],
 	},
 };
 

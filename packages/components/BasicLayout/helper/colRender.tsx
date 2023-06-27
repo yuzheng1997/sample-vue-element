@@ -6,9 +6,10 @@ import {
 	isShow,
 } from "@sample-vue-element/utils/helper";
 import { ElCol } from "element-plus";
+import type { ColProps } from "element-plus";
 import { colPropKeys } from "../props";
-import { isNumber } from "lodash-es";
-import { BasicLayoutPorps } from "@sample-vue-element/types";
+import { isNumber, pickBy } from "lodash-es";
+import { BasicLayoutPorps, ColSpan } from "@sample-vue-element/types";
 
 /**
  * 获取Col所需要的属性
@@ -20,7 +21,11 @@ const getColProps = (
 	props: NullableRecord,
 	rowProps: BasicLayoutPorps
 ): Recordable => {
-	let colSpan = rowProps.colSpan || {};
+	let colSpan = normalizeColSpan(rowProps.colSpan)
+	const colProps = props ? getProps(props, colPropKeys) : Object.create(null);
+	return mergeProps(colSpan, colProps);
+};
+export const normalizeColSpan = (colSpan?: ColSpan): inferInstance<ColProps> => {
 	// 格式化colSpan
 	if (isNumber(colSpan)) {
 		colSpan = { span: colSpan };
@@ -31,8 +36,7 @@ const getColProps = (
 		});
 		colSpan = sizeMap;
 	}
-	const colProps = props ? getProps(props, colPropKeys) : Object.create(null);
-	return mergeProps(colSpan, colProps);
+	return pickBy(colSpan || {}, Boolean);
 };
 /**
  * 获取node，如果没有使用el-col，则包装

@@ -1,37 +1,78 @@
-import { BasicFormProps } from "@sample-vue-element/types/basicForm";
+import type {
+	BasicFormProps,
+	Schema,
+} from "@sample-vue-element/types/basicForm";
 import { getProps } from "@sample-vue-element/utils/helper";
 import { formPropKeys } from "../props";
-import {ElForm} from "element-plus/es";
-import { computed, ref } from "@vue/runtime-core";
+import { computed, ref, ComponentPublicInstance } from "vue";
+import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
+const normalizeScheams = (schemas: Schema[]): Schema[] => {
+	return schemas.map(schema => {
+		const { colSpan, ...rest } = schema
+		return {
+			colSpan: normalizeColSpan(colSpan),
+			...rest
+		}
+	})
+};
 
-const usePropHelper = (props: BasicFormProps) => {
+export const usePropHelper = (props: BasicFormProps) => {
 	// 表单实例
-	const formRef = ref<InstanceType<typeof ElForm> | null>(null);
-	const registerFormRef = (el: InstanceType<typeof ElForm>) => (formRef.value = el);
+	const formRef = ref<ComponentPublicInstance | Element | null>(null);
+	const registerFormRef = (
+		ref: Element | ComponentPublicInstance | null,
+		refs: Record<string, any>
+	) => {
+		formRef.value = ref;
+	};
+
 	// 获取表单配置
 	const formProps = computed(() => {
 		return getProps(props, formPropKeys);
 	});
+	// 获取表单schemas
+	const getSchemas = computed<Schema[]>(() => {
+		const schemas = props.schemas || [];
+		return normalizeScheams(schemas);
+	});
+	// 获取表单所有字段
+	const getFields = () => {
+		const { schemas } = props;
+		return (schemas || []).map((schema) => schema.field);
+	};
 	// 表单校验
-    const validate = (fields?: string[]) => {
-
-    }
+	const validate = (fields?: string[]) => {
+		fields = fields || (getFields() as string[]);
+		(formRef.value as any)
+			?.validateField(fields)
+			.then(() => {
+				return {
+					result: true,
+				};
+			})
+			.catch((message: string) => {
+				return {
+					result: false,
+					message,
+				};
+			});
+	};
 	// 表单重置
-    const resetFields = () => {
-        formRef.value?.resetFields()
-    }
+	const resetFields = () => {
+		(formRef.value as any)?.resetFields();
+	};
 	// 清除校验
-    const clearValidate = (fields?: string[]) => {
-        formRef.value?.resetFields()
-    }
+	const clearValidate = (fields?: string[]) => {
+		fields = fields || (getFields() as string[]);
+		(formRef.value as any)?.resetFields(fields);
+	};
 	return {
-        registerFormRef,
+		registerFormRef,
 		formProps,
-        resetFields,
-        validate,
-        clearValidate
+		resetFields,
+		validate,
+		clearValidate,
+		getSchemas,
 	};
 };
-
-export default usePropHelper

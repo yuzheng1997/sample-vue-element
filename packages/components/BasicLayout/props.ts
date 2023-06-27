@@ -1,5 +1,5 @@
 import { ColSpan } from "@sample-vue-element/types";
-import { colProps, rowProps } from "element-plus";
+import { colProps, rowProps } from "element-plus/es";
 import { PropType } from "vue";
 
 export const basicProps = {
