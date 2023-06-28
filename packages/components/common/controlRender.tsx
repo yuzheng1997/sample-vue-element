@@ -38,4 +38,5 @@ export const getTipRender = (msg: string) => {
 			<use xlinkHref={infoSvg} />
 		</svg>
 	);
+	
 };
