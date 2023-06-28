@@ -8,18 +8,20 @@ import { computed, ref, ComponentPublicInstance } from "vue";
 import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
 const normalizeScheams = (schemas: Schema[]): Schema[] => {
-	return schemas.map(schema => {
-		const { colSpan, ...rest } = schema
+	return schemas.map((schema) => {
+		const { colSpan, ...rest } = schema;
 		return {
 			colSpan: normalizeColSpan(colSpan),
-			...rest
-		}
-	})
+			...rest,
+		};
+	});
 };
 
 export const usePropHelper = (props: BasicFormProps) => {
 	// 表单实例
 	const formRef = ref<ComponentPublicInstance | Element | null>(null);
+	// model
+	const model = ref({});
 	const registerFormRef = (
 		ref: Element | ComponentPublicInstance | null,
 		refs: Record<string, any>
@@ -74,5 +76,6 @@ export const usePropHelper = (props: BasicFormProps) => {
 		validate,
 		clearValidate,
 		getSchemas,
+		model,
 	};
 };

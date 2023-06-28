@@ -21,5 +21,5 @@ export const basicProps = {
 		default: [],
 	},
 };
-
-export const formPropKeys = Object.keys(formProps);
+const excludePropKeys = ['model']
+export const formPropKeys = Object.keys(formProps).filter(item => !excludePropKeys.includes(item));

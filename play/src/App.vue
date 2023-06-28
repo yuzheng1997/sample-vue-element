@@ -1,5 +1,5 @@
 <script setup>
-import LayoutDemo from './components/LayoutDemo.vue'
+import LayoutDemo from './components/FormDemo.vue'
 </script>
 
 <template>

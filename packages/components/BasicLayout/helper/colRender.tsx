@@ -4,6 +4,7 @@ import {
 	getProps,
 	isIfShow,
 	isShow,
+	isVFor,
 } from "@sample-vue-element/utils/helper";
 import { ElCol } from "element-plus";
 import type { ColProps } from "element-plus";
@@ -21,11 +22,14 @@ const getColProps = (
 	props: NullableRecord,
 	rowProps: BasicLayoutPorps
 ): Recordable => {
-	let colSpan = normalizeColSpan(rowProps.colSpan)
+	let colSpan = normalizeColSpan(rowProps.colSpan);
 	const colProps = props ? getProps(props, colPropKeys) : Object.create(null);
+	console.log(props, colSpan, colProps);
 	return mergeProps(colSpan, colProps);
 };
-export const normalizeColSpan = (colSpan?: ColSpan): inferInstance<ColProps> => {
+export const normalizeColSpan = (
+	colSpan?: ColSpan
+): inferInstance<ColProps> => {
 	// 格式化colSpan
 	if (isNumber(colSpan)) {
 		colSpan = { span: colSpan };
@@ -45,17 +49,25 @@ export const normalizeColSpan = (colSpan?: ColSpan): inferInstance<ColProps> => 
 const getColRender = (
 	node: VNode,
 	rowProps: BasicLayoutPorps
-): VNode | undefined => {
-	const { props, type } = node;
+): VNode | VNode[] | undefined => {
 	// 已经被el-col包裹，直接返回
-	if (_isPlainObject(type) && (type as Component).name === "ElCol") {
+	if (_isPlainObject(node.type) && (node.type as Component).name === "ElCol") {
 		return node;
 	}
-	if (!isIfShow(node)) return;
-	if (!isShow(node)) return;
+	if (!isIfShow(node) || !isShow(node)) return;
+	if (isVFor(node)) {
+		return ((node.children as VNode[]) || []).map((node) =>
+			createColNode(rowProps, node)
+		);
+	}
+	// 使用el-col包装
+	return createColNode(rowProps, node);
+};
+// 获取单个节点
+const createColNode = (rowProps: BasicLayoutPorps, node: VNode) => {
+	const { props } = node;
 	// 获取props
 	const colProps = getColProps(props, rowProps);
-	// 使用el-col包装
 	return (
 		<ElCol {...colProps}>
 			{{
@@ -64,9 +76,12 @@ const getColRender = (
 		</ElCol>
 	);
 };
-
 export const createColRender = (slots: Slots, props: BasicLayoutPorps) => {
 	const nodes = slots.default?.();
 	if (!nodes) return [];
-	return () => nodes.map((node) => getColRender(node, props)).filter(Boolean);
+	return () =>
+		nodes
+			.map((node) => getColRender(node, props))
+			.flat()
+			.filter(Boolean);
 };

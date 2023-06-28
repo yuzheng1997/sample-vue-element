@@ -8,6 +8,11 @@ export const isIfShow = (node: VNode) => {
 	const { children, type } = node;
 	return !(children === "v-if" && type.toString() === "Symbol(v-cmt)");
 };
+// 使用v-for
+export const isVFor = (node: VNode) => {
+	const { children, type } = node;
+	return Array.isArray(children) && type.toString() === "Symbol(v-fgt)"
+};
 // 使用v-show
 export const isShow = (node: VNode) => {
 	const { dirs } = node;

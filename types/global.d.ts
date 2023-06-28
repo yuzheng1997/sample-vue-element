@@ -23,5 +23,9 @@ declare module "@vue/runtime-core" {
 		vShow: typeof vShow;
 	}
 }
+declare module "*.svg" {
+	const src: string;
+	export default src;
+}
 
 export {};
