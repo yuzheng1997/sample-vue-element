@@ -11,11 +11,16 @@ export const getProps = (
 };
 
 export const resolveFunctionAble = <T>(
-	fn: FunctionAble<T>,
+	fn: FunctionAble<T> | undefined,
+	defaultValue: T,
 	...args: any[]
 ): T => {
+	let result = defaultValue;
 	if (isFunction(fn)) {
-		return fn(...args);
+		console.log(fn(...args))
+		result = fn(...args) || result;
+	} else if (fn) {
+		return fn as T;
 	}
-	return fn;
+	return result;
 };

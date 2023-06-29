@@ -48,11 +48,7 @@ export const normalizeColSpan = (
 const getColRender = (
 	node: VNode,
 	rowProps: BasicLayoutPorps
-): VNode | VNode[] | undefined => {
-	// 已经被el-col包裹，直接返回
-	if (_isPlainObject(node.type) && (node.type as Component).name === "ElCol") {
-		return node;
-	}
+): VNode | (VNode | undefined)[] | undefined => {
 	if (!isIfShow(node) || !isShow(node)) return;
 	if (isVFor(node)) {
 		return ((node.children as VNode[]) || []).map((node) =>
@@ -64,6 +60,11 @@ const getColRender = (
 };
 // 获取单个节点
 const createColNode = (rowProps: BasicLayoutPorps, node: VNode) => {
+	if (!node) return;
+	// 已经被el-col包裹，直接返回
+	if (_isPlainObject(node.type) && (node.type as Component).name === "ElCol") {
+		return node;
+	}
 	const { props } = node;
 	// 获取props
 	const colProps = getColProps(props, rowProps);

@@ -1,5 +1,8 @@
 import { Schema } from "@sample-vue-element/types/basicForm";
-import { getProps } from "@sample-vue-element/utils/helper";
+import {
+	getProps,
+	resolveFunctionAble,
+} from "@sample-vue-element/utils/helper";
 import type { Component } from "vue";
 import { resolveComponent, toRaw } from "vue";
 import infoSvg from "./info.svg";
@@ -25,11 +28,15 @@ export const getContentRender = (
 	schema: Schema,
 	model: Record<string, any>
 ) => {
-	const { field, tag } = schema;
+	const { field, tag, disabled } = schema;
 	const ComponentTag = getComponent(tag as string) as any;
 	const propKeys = getComponentAttrs(ComponentTag, schema);
 	return () => (
-		<ComponentTag v-model={model[field as string]} {...propKeys}></ComponentTag>
+		<ComponentTag
+			v-model={model[field as string]}
+			{...propKeys}
+			disabled={resolveFunctionAble(disabled, false, model)}
+		></ComponentTag>
 	);
 };
 const svgImgStyle = {

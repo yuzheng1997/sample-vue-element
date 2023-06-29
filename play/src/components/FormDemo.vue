@@ -1,5 +1,6 @@
 <template>
 	<BasicForm :schemas="schemas"> </BasicForm>
+	<button  ></button>
 	<button @click="toggle">切换</button>
 </template>
 

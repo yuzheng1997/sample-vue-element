@@ -4,7 +4,6 @@ import { basicProps } from "./props";
 import { defineComponent } from "vue";
 import { usePropHelper, getFormItemRender } from "./helper";
 import BasicLayout from "../BasicLayout/index.vue";
-import { resolveFunctionAble } from "@sample-vue-element/utils/helper";
 
 export default defineComponent({
 	name: "BasicForm",
@@ -25,17 +24,16 @@ export default defineComponent({
 			validate,
 			clearValidate,
 		});
-		const getChildren = () => {
-			const renders = getSchemas.value
-				.map((schema) => {
-					return getFormItemRender(schema, ctx);
-				})
-				.filter(Boolean);
-			return [...renders.map((item) => item())];
-		};
+
 		return () => (
 			<ElForm ref={registerFormRef} {...formProps.value} model={model.value}>
-				<BasicLayout>{getChildren()}</BasicLayout>
+				<BasicLayout>
+					{getSchemas.value
+						.map((schema) => {
+							return getFormItemRender(schema, ctx)();
+						})
+						.filter(Boolean)}
+				</BasicLayout>
 			</ElForm>
 		);
 	},
