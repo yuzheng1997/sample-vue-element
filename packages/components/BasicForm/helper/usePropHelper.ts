@@ -7,11 +7,18 @@ import { formPropKeys } from "../props";
 import { computed, ref, ComponentPublicInstance } from "vue";
 import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
-const normalizeScheams = (schemas: Schema[]): Schema[] => {
+const normalizeScheams = (
+	schemas: Schema[],
+	{ disabled }: Recordable
+): Schema[] => {
 	return schemas.map((schema) => {
-		const { colSpan, ...rest } = schema;
+		// 保留form整个表单禁用的能力
+		const { colSpan, field, prop, disabled: itemDisabeld, ...rest } = schema;
 		return {
 			colSpan: normalizeColSpan(colSpan),
+			disabled: disabled ? () => true : itemDisabeld,
+			field,
+			prop: prop || field,
 			...rest,
 		};
 	});
@@ -36,7 +43,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 	// 获取表单schemas
 	const getSchemas = computed<Schema[]>(() => {
 		const schemas = props.schemas || [];
-		return normalizeScheams(schemas);
+		return normalizeScheams(schemas, props);
 	});
 	// 获取表单所有字段
 	const getFields = () => {
@@ -71,6 +78,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 	};
 	return {
 		registerFormRef,
+		props,
 		formProps,
 		resetFields,
 		validate,

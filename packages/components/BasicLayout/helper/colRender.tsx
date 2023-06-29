@@ -24,7 +24,6 @@ const getColProps = (
 ): Recordable => {
 	let colSpan = normalizeColSpan(rowProps.colSpan);
 	const colProps = props ? getProps(props, colPropKeys) : Object.create(null);
-	console.log(props, colSpan, colProps);
 	return mergeProps(colSpan, colProps);
 };
 export const normalizeColSpan = (

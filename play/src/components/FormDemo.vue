@@ -17,7 +17,16 @@ const schemas = [
 		tag: ElInput,
 		field: "b",
 		colSpan: 8,
+		filter: (model) => {
+			return model.a !== "1";
+		},
 		label: "字段2",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		colSpan: 8,
+		label: "字段3",
 	},
 ];
 const model = ref({});

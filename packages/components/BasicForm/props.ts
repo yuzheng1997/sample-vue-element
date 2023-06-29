@@ -1,6 +1,6 @@
 import { ColSpan } from "@sample-vue-element/types";
 import { Schema } from "@sample-vue-element/types/basicForm";
-import { formProps } from "element-plus";
+import { formProps, formItemProps } from "element-plus";
 import { PropType } from "vue";
 
 export const basicProps = {
@@ -21,5 +21,5 @@ export const basicProps = {
 		default: [],
 	},
 };
-const excludePropKeys = ['model']
-export const formPropKeys = Object.keys(formProps).filter(item => !excludePropKeys.includes(item));
+export const formPropKeys = Object.keys(formProps).filter(item => !['model', 'rules', 'disabled'].includes(item));
+export const formItemPropKeys = Object.keys(formItemProps).filter(item => !['rules'].includes(item));

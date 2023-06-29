@@ -4,11 +4,13 @@ import { basicProps } from "./props";
 import { defineComponent } from "vue";
 import { usePropHelper, getFormItemRender } from "./helper";
 import BasicLayout from "../BasicLayout/index.vue";
+import { resolveFunctionAble } from "@sample-vue-element/utils/helper";
 
 export default defineComponent({
 	name: "BasicForm",
 	props: basicProps,
 	setup(props, { expose }) {
+		const ctx = usePropHelper(props);
 		const {
 			registerFormRef,
 			formProps,
@@ -17,19 +19,23 @@ export default defineComponent({
 			clearValidate,
 			getSchemas,
 			model,
-		} = usePropHelper(props);
+		} = ctx;
 		expose({
 			resetFields,
 			validate,
 			clearValidate,
 		});
+		const getChildren = () => {
+			const renders = getSchemas.value
+				.map((schema) => {
+					return getFormItemRender(schema, ctx);
+				})
+				.filter(Boolean);
+			return [...renders.map((item) => item())];
+		};
 		return () => (
 			<ElForm ref={registerFormRef} {...formProps.value} model={model.value}>
-				<BasicLayout>
-					{getSchemas.value.map((schema) => {
-						return getFormItemRender(schema, model, formProps.value)();
-					})}
-				</BasicLayout>
+				<BasicLayout>{getChildren()}</BasicLayout>
 			</ElForm>
 		);
 	},

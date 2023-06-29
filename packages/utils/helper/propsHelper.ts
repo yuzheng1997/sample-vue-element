@@ -1,4 +1,4 @@
-import { pickBy } from "lodash-es";
+import { isFunction, pickBy } from "lodash-es";
 
 export const getProps = (
 	source: Record<string, any>,
@@ -8,4 +8,14 @@ export const getProps = (
 		if (!value) return false;
 		if (keys.includes(key)) return true;
 	});
+};
+
+export const resolveFunctionAble = <T>(
+	fn: FunctionAble<T>,
+	...args: any[]
+): T => {
+	if (isFunction(fn)) {
+		return fn(...args);
+	}
+	return fn;
 };

@@ -2,9 +2,11 @@ import { basicProps } from '@sample-vue-element/components/BasicForm/props'
 import { Component, ExtractPropTypes } from 'vue'
 import { ColSpan } from './colSpan'
 export type Schema = {
-    tag: string | Component,
+    tag?: string | Component,
+    type?: string,
     label?: string,
     field?: string,
+    prop?: string,
     disabled?: FunctionAble<boolean>,
     filter?: FunctionAble<boolean>,
     rules?: FunctionAble<Array<any>>,

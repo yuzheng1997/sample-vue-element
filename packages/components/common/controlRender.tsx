@@ -3,6 +3,7 @@ import { getProps } from "@sample-vue-element/utils/helper";
 import type { Component } from "vue";
 import { resolveComponent, toRaw } from "vue";
 import infoSvg from "./info.svg";
+import { ElTooltip } from "element-plus";
 
 // 获取component
 
@@ -25,18 +26,24 @@ export const getContentRender = (
 	model: Record<string, any>
 ) => {
 	const { field, tag } = schema;
-	const ComponentTag = getComponent(tag) as any;
+	const ComponentTag = getComponent(tag as string) as any;
 	const propKeys = getComponentAttrs(ComponentTag, schema);
 	return () => (
 		<ComponentTag v-model={model[field as string]} {...propKeys}></ComponentTag>
 	);
 };
+const svgImgStyle = {
+	alignSelf: "center",
+	cursor: "pointer",
+};
 // 获取控件render
 export const getTipRender = (msg: string) => {
-	const svgIcon = (
-		<svg aria-hidden={true} xmlns="http://www.w3.org/2000/svg">
-			<use xlinkHref={infoSvg} />
-		</svg>
+	const svgIcon = <img width={14} src={infoSvg} style={svgImgStyle} />;
+	return () => (
+		<ElTooltip effect="dark" content={msg} placement="top">
+			{{
+				default: () => svgIcon,
+			}}
+		</ElTooltip>
 	);
-	
 };
