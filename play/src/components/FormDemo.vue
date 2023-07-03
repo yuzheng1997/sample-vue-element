@@ -1,6 +1,5 @@
 <template>
 	<BasicForm :schemas="schemas"> </BasicForm>
-	<button  ></button>
 	<button @click="toggle">切换</button>
 </template>
 
@@ -20,7 +19,7 @@ const schemas = [
 		field: "b",
 		colSpan: 8,
 		filter: (model) => {
-			return show.value;
+			return model.a == 1
 		},
 		label: "字段2",
 	},
@@ -28,21 +27,11 @@ const schemas = [
 		tag: ElInput,
 		field: "c",
 		colSpan: 8,
-		disabled: (model) => {
-			return model.a == '1';
-		},
 		label: "字段3",
 	},
 	{
 		tag: ElInput,
 		field: "d",
-		rules: (model) => {
-			console.log(123);
-			if (model.a === '1') {
-				return [{required: true, message: '必填', trigger: ['blur']}]
-			}
-			return []
-		},
 		colSpan: 8,
 		label: "字段4",
 	},
