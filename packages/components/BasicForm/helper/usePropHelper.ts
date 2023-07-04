@@ -2,20 +2,20 @@ import type {
 	BasicFormProps,
 	Schema,
 } from "@sample-vue-element/types/basicForm";
-import { getProps } from "@sample-vue-element/utils/helper";
+import { _isBlock, getProps } from "@sample-vue-element/utils/helper";
 import { formPropKeys } from "../props";
-import { computed, ref, ComponentPublicInstance } from "vue";
+import { computed, ref, ComponentPublicInstance, watch } from "vue";
 import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
 const normalizeScheams = (
 	schemas: Schema[],
-	{ disabled }: Recordable
+	{ disabled, colSpan: formColSpan }: Recordable
 ): Schema[] => {
 	return schemas.map((schema) => {
 		// 保留form整个表单禁用的能力
 		const { colSpan, field, prop, disabled: itemDisabeld, ...rest } = schema;
 		return {
-			colSpan: normalizeColSpan(colSpan),
+			colSpan: normalizeColSpan(colSpan || formColSpan),
 			disabled: disabled ? () => true : itemDisabeld,
 			field,
 			prop: prop || field,
@@ -24,6 +24,16 @@ const normalizeScheams = (
 	});
 };
 
+const setDefaultValues = (schemas: Schema[], model: Recordable | undefined) => {
+	if (!model) return;
+	schemas.forEach((schema) => {
+		const { defaultValue, field } = schema;
+		if (!_isBlock(model[field as string])) {
+			return;
+		}
+		model[field as string] = _isBlock(defaultValue) ? undefined : defaultValue;
+	});
+};
 export const usePropHelper = (props: BasicFormProps) => {
 	// 表单实例
 	const formRef = ref<ComponentPublicInstance | Element | null>(null);
@@ -35,16 +45,29 @@ export const usePropHelper = (props: BasicFormProps) => {
 	) => {
 		formRef.value = ref;
 	};
-
-	// 获取表单配置
-	const formProps = computed(() => {
-		return getProps(props, formPropKeys);
-	});
 	// 获取表单schemas
 	const getSchemas = computed<Schema[]>(() => {
 		const schemas = props.schemas || [];
 		return normalizeScheams(schemas, props);
 	});
+	// 监听schemas和model，设置默认值
+	watch(
+		[() => props.model, () => props.schemas],
+		() => {
+			if (props.model) {
+				model.value = props.model;
+			}
+			setDefaultValues(getSchemas.value, model.value);
+		},
+		{
+			immediate: true,
+		}
+	);
+	// 获取表单配置
+	const formProps = computed(() => {
+		return getProps(props, formPropKeys);
+	});
+
 	// 获取表单所有字段
 	const getFields = () => {
 		const { schemas } = props;

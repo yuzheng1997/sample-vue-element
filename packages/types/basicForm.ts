@@ -7,6 +7,7 @@ export type Schema = {
     label?: string,
     field?: string,
     prop?: string,
+    defaultValue?: any,
     disabled?: FunctionAble<boolean>,
     filter?: FunctionAble<boolean>,
     rules?: FunctionAble<Array<any>>,

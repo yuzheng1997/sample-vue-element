@@ -1,4 +1,4 @@
-import { isFunction, pickBy } from "lodash-es";
+import { isFunction, isUndefined, pickBy } from "lodash-es";
 
 export const getProps = (
 	source: Record<string, any>,
@@ -17,8 +17,9 @@ export const resolveFunctionAble = <T>(
 ): T => {
 	let result = defaultValue;
 	if (isFunction(fn)) {
-		console.log(fn(...args))
-		result = fn(...args) || result;
+		const res = fn(...args);
+		if (isUndefined(res)) return result;
+		return res
 	} else if (fn) {
 		return fn as T;
 	}

@@ -63,9 +63,7 @@ export const getFormItemRender = (schema: Schema, ctx: Recordable) => {
 	const contentLabelRender = getContentLabelRender(schema, labelSuffix);
 	const resolvedRules = resolveRules(schema, rules);
 	return () => {
-		if (!(!filter || resolveFunctionAble(filter, false, model.value))) return;
-		console.log(resolveFunctionAble(resolvedRules, [], model.value));
-
+		if (filter && !resolveFunctionAble(filter, false, model.value)) return;
 		return (
 			<ElCol key={field} {...(colSpan as any)}>
 				<ElFormItem

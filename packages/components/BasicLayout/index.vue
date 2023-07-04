@@ -6,7 +6,8 @@ import { getProps } from "@sample-vue-element/utils/helper/propsHelper";
 import { createColRender } from "./helper/colRender";
 export default defineComponent({
 	props: basicProps,
-	setup(props, { slots }) {
+	setup(props, { slots, emit }) {
+
 		// 获取ElRow的props
 		const rowProps = getProps(props, rowPropKeys);
 		return () => (

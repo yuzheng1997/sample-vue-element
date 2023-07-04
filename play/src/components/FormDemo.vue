@@ -11,28 +11,25 @@ const schemas = [
 	{
 		tag: ElInput,
 		field: "a",
-		colSpan: 8,
 		label: "字段1",
 	},
 	{
 		tag: ElInput,
 		field: "b",
-		colSpan: 8,
+		defaultValue: "2",
 		filter: (model) => {
-			return model.a == 1
+			return model.a == 1;
 		},
 		label: "字段2",
 	},
 	{
 		tag: ElInput,
 		field: "c",
-		colSpan: 8,
 		label: "字段3",
 	},
 	{
 		tag: ElInput,
 		field: "d",
-		colSpan: 8,
 		label: "字段4",
 	},
 ];

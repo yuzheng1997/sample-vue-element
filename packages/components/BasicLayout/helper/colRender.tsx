@@ -79,9 +79,10 @@ const createColNode = (rowProps: BasicLayoutPorps, node: VNode) => {
 export const createColRender = (slots: Slots, props: BasicLayoutPorps) => {
 	const nodes = slots.default?.();
 	if (!nodes) return [];
-	return () =>
-		nodes
+	return () => {
+		return nodes
 			.map((node) => getColRender(node, props))
 			.flat()
 			.filter(Boolean);
+	};
 };

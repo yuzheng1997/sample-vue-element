@@ -18,8 +18,12 @@ export const basicProps = {
 	},
 	colSpan: {
 		type: [Object, Number, Array] as PropType<ColSpan>,
-		default: [],
-	},
+		default: [24, 12, 8, 6, 6],
+	}
 };
-export const formPropKeys = Object.keys(formProps).filter(item => !['model', 'rules', 'disabled'].includes(item));
-export const formItemPropKeys = Object.keys(formItemProps).filter(item => !['rules'].includes(item));
+export const formPropKeys = Object.keys(formProps).filter(
+	(item) => !["model", "rules", "disabled"].includes(item)
+);
+export const formItemPropKeys = Object.keys(formItemProps).filter(
+	(item) => !["rules"].includes(item)
+);
