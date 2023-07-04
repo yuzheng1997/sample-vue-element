@@ -48,6 +48,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 	// 获取表单schemas
 	const getSchemas = computed<Schema[]>(() => {
 		const schemas = props.schemas || [];
+		const 
 		return normalizeScheams(schemas, props);
 	});
 	// 监听schemas和model，设置默认值
