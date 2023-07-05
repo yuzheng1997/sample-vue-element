@@ -78,10 +78,14 @@ const createColNode = (rowProps: BasicLayoutPorps, node: VNode) => {
 };
 export const createColRender = (slots: Slots, props: BasicLayoutPorps) => {
 	const nodes = slots.default?.();
+	const { collapsed, alwaysShowLine } = props;
 	if (!nodes) return [];
 	return () => {
 		return nodes
-			.map((node) => getColRender(node, props))
+			.map((node) => {
+				if (collapsed && alwaysShowLine) return;
+				return getColRender(node, props);
+			})
 			.flat()
 			.filter(Boolean);
 	};

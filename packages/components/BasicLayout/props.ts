@@ -7,11 +7,15 @@ export const basicProps = {
 	colSpan: {
 		type: [Object, Number, Array] as PropType<ColSpan>,
 	},
+	collapsable: {
+		type: Boolean as PropType<boolean>,
+		default: true
+	},
 	alwaysShowLine: {
 		type: Number as PropType<number>,
 		default: 2
 	},
-	modelValue: {
+	collapsed: {
 		type: Boolean as PropType<boolean>,
 		default: false
 	}
