@@ -1,43 +1,236 @@
 <template>
-	<BasicForm :schemas="schemas"> </BasicForm>
+	<BasicForm :collapsable="true" ref="basicForm" :schemas="schemas">
+	</BasicForm>
 	<button @click="toggle">切换</button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import BasicForm from "@sample-vue-element/components/BasicForm/index.vue";
 import { ElInput } from "element-plus/es";
 import { ref } from "vue";
+const basicForm = ref(null);
 const schemas = [
 	{
 		tag: ElInput,
 		field: "a",
-		label: "字段1",
+		label: "字段a",
 	},
 	{
 		tag: ElInput,
 		field: "b",
 		defaultValue: "2",
-		filter: (model) => {
-			return model.a == 1;
-		},
-		label: "字段2",
+		label: "字段b",
 	},
 	{
 		tag: ElInput,
 		field: "c",
-		label: "字段3",
+		label: "字段c",
 	},
 	{
 		tag: ElInput,
 		field: "d",
-		label: "字段4",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
+	},
+	{
+		tag: ElInput,
+		field: "a",
+		label: "字段a",
+	},
+	{
+		tag: ElInput,
+		field: "b",
+		defaultValue: "2",
+		label: "字段b",
+	},
+	{
+		tag: ElInput,
+		field: "c",
+		label: "字段c",
+	},
+	{
+		tag: ElInput,
+		field: "d",
+		label: "字段d",
+	},
+	{
+		tag: ElInput,
+		field: "e",
+		label: "字段e",
+	},
+	{
+		tag: ElInput,
+		field: "f",
+		label: "字段f",
 	},
 ];
-const show = ref(false);
 const toggle = () => {
-	show.value = !show.value;
+	basicForm.value && (basicForm.value as any).toggleCollapsed();
 };
-const model = ref({});
 </script>
 
 <style lang="scss" scoped></style>

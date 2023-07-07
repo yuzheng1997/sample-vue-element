@@ -7,14 +7,15 @@ import { createColRender } from "./helper/colRender";
 import { useResizeHelper } from "./helper/useResizeHelper";
 export default defineComponent({
 	props: basicProps,
+	inheritAttrs: false,
 	setup(props, { slots, emit }) {
-		const { registerRowRef } = useResizeHelper(props);
+		const { registerRowRef, currentDomSize } = useResizeHelper(props);
 		// 获取ElRow的props
 		const rowProps = getProps(props, rowPropKeys);
 		return () => (
 			<ElRow ref={registerRowRef} {...rowProps}>
 				{{
-					default: createColRender(slots, props),
+					default: createColRender(slots, props, currentDomSize),
 				}}
 			</ElRow>
 		);

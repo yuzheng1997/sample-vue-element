@@ -39,6 +39,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 	const formRef = ref<ComponentPublicInstance | Element | null>(null);
 	// model
 	const model = ref({});
+	const collapsed = ref(true);
 	const registerFormRef = (
 		ref: Element | ComponentPublicInstance | null,
 		refs: Record<string, any>
@@ -99,6 +100,10 @@ export const usePropHelper = (props: BasicFormProps) => {
 		fields = fields || (getFields() as string[]);
 		(formRef.value as any)?.resetFields(fields);
 	};
+	const toggleCollapsed = () => {
+		collapsed.value = !collapsed.value;
+		
+	};
 	return {
 		registerFormRef,
 		props,
@@ -108,5 +113,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 		clearValidate,
 		getSchemas,
 		model,
+		toggleCollapsed,
+		collapsed,
 	};
 };

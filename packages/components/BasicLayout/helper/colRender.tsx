@@ -7,11 +7,30 @@ import {
 	isVFor,
 } from "@sample-vue-element/utils/helper";
 import { ElCol } from "element-plus";
-import type { ColProps } from "element-plus";
+import type { ColProps, ColSizeObject } from "element-plus";
 import { colPropKeys } from "../props";
 import { isNumber, pickBy } from "lodash-es";
 import { BasicLayoutPorps, ColSpan } from "@sample-vue-element/types";
 
+const BASIC_SPAN_SIZE = 24;
+
+const getOverflowAlwaysShowFn = (size: number, domSize: string) => {
+	let preSize = size;
+	return (colProps: ColProps) => {
+		let currentSize =
+			(colProps[domSize as keyof ColProps] as number | ColSizeObject) ||
+			colProps.span ||
+			24;
+		if (_isPlainObject(currentSize)) {
+			currentSize = currentSize.span || 24;
+		}
+		preSize -= currentSize;
+		if (preSize < 0) {
+			return false;
+		}
+		return true;
+	};
+};
 /**
  * 获取Col所需要的属性
  * 合并colProps
@@ -76,17 +95,27 @@ const createColNode = (rowProps: BasicLayoutPorps, node: VNode) => {
 		</ElCol>
 	);
 };
-export const createColRender = (slots: Slots, props: BasicLayoutPorps) => {
+export const createColRender = (
+	slots: Slots,
+	props: BasicLayoutPorps,
+	currentDomSize: { value: string }
+) => {
 	const nodes = slots.default?.();
 	const { collapsed, alwaysShowLine } = props;
 	if (!nodes) return [];
 	return () => {
+		const isOverflow = getOverflowAlwaysShowFn(
+			alwaysShowLine * BASIC_SPAN_SIZE,
+			currentDomSize.value
+		);
 		return nodes
 			.map((node) => {
-				if (collapsed && alwaysShowLine) return;
 				return getColRender(node, props);
 			})
 			.flat()
-			.filter(Boolean);
+			.filter((node) => {
+				if (!node) return false;
+				return collapsed ? isOverflow(node.props as any) : true;
+			});
 	};
 };

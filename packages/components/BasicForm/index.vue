@@ -8,7 +8,8 @@ import BasicLayout from "../BasicLayout/index.vue";
 export default defineComponent({
 	name: "BasicForm",
 	props: basicProps,
-	setup(props, { expose }) {
+	inheritAttrs: false,
+	setup(props, { expose, attrs }) {
 		const ctx = usePropHelper(props);
 		const {
 			registerFormRef,
@@ -16,6 +17,8 @@ export default defineComponent({
 			resetFields,
 			validate,
 			clearValidate,
+			toggleCollapsed,
+			collapsed,
 			getSchemas,
 			model,
 		} = ctx;
@@ -23,10 +26,11 @@ export default defineComponent({
 			resetFields,
 			validate,
 			clearValidate,
+			toggleCollapsed,
 		});
 		return () => (
 			<ElForm ref={registerFormRef} {...formProps.value} model={model.value}>
-				<BasicLayout>
+				<BasicLayout {...attrs} collapsed={collapsed.value}>
 					{renderList(getSchemas.value, (schema) => {
 						return getFormItemRender(schema, ctx)();
 					})}
