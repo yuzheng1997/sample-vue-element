@@ -13,6 +13,7 @@ export type Schema = {
 	rules?: FunctionAble<Array<any>>;
 	colSpan?: ColSpan;
 	tip?: string;
+	required?: boolean,
 };
 
 export type BasicFormProps = ExtractPropTypes<typeof basicProps>;

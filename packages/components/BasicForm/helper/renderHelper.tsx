@@ -28,26 +28,29 @@ export const getContentLabelRender = (schema: Schema, labelSuffix: string) => {
  * @param formRules
  * @returns
  */
-const resolveRules = (schema: Schema, formRules: any) => {
+const resolveRules = (schema: Schema, formRules: Recordable | undefined) => {
 	return (model: Recordable) => {
-		const { field, rules: itemRules } = schema;
+		const { field, rules: itemRules, required } = schema;
 		const resolvedRules = resolveFunctionAble(itemRules, [], model) as any[];
 		let result;
 		// 如果form上不存在对应的配置
 		if (
 			!formRules ||
 			!_isPlainObject(formRules) ||
-			!(formRules as Recordable)[field as string]
+			!formRules[field as string]
 		) {
 			result = resolvedRules;
 		} else {
-			// 如果form上也存在对应field的rules
-			let formItemRules = (formRules as Recordable)[field as string] || [];
+			// 如果form上存在对应field的rules
+			let formItemRules = formRules[field as string] || [];
 			if (!Array.isArray(formItemRules)) {
 				formItemRules = [formItemRules];
 			}
 			// 合并验证规则
 			result = [...formItemRules, ...resolvedRules];
+		}
+		if (required) {
+
 		}
 		return result as any[];
 	};

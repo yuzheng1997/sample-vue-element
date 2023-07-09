@@ -101,7 +101,7 @@ export const createColRender = (
 	currentDomSize: { value: string }
 ) => {
 	const nodes = slots.default?.();
-	const { collapsed, alwaysShowLine } = props;
+	const { collapsed, alwaysShowLine, collapsable } = props;
 	if (!nodes) return [];
 	return () => {
 		const isOverflow = getOverflowAlwaysShowFn(
@@ -115,7 +115,8 @@ export const createColRender = (
 			.flat()
 			.filter((node) => {
 				if (!node) return false;
-				return collapsed ? isOverflow(node.props as any) : true;
+				if (!collapsable) return true
+				return !collapsed || isOverflow(node.props as any)
 			});
 	};
 };

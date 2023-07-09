@@ -1,5 +1,5 @@
 <template>
-	<BasicForm :collapsable="true" ref="basicForm" :schemas="schemas">
+	<BasicForm ref="basicForm" :schemas="schemas">
 	</BasicForm>
 	<button @click="toggle">切换</button>
 </template>

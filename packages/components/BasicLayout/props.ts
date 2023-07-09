@@ -9,7 +9,7 @@ export const basicProps = {
 	},
 	collapsable: {
 		type: Boolean as PropType<boolean>,
-		default: true
+		default: false
 	},
 	alwaysShowLine: {
 		type: Number as PropType<number>,
