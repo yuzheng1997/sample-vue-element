@@ -97,6 +97,7 @@ const tableProps = {
 };
 
 export const basicTableProps = {
+	...tableProps,
 	// 显示序号
 	showIndex: Boolean as PropType<boolean>,
 

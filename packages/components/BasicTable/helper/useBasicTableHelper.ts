@@ -3,7 +3,7 @@ import {
 	ElTableProps,
 } from "@sample-vue-element/types/basicTable";
 import { getProps } from "@sample-vue-element/utils/helper";
-import { ref, ComponentPublicInstance, watch } from "vue";
+import { ref, ComponentPublicInstance, watch, computed } from "vue";
 import { keyOfBasicTableProps, keyOfTableProps } from "../props";
 
 export const useBasicTableHelper = (props: BasicTableProps) => {
@@ -17,6 +17,9 @@ export const useBasicTableHelper = (props: BasicTableProps) => {
 	) => {
 		tableRef.value = ref;
 	};
+	const getSchemas = computed(() => {
+		return normalizeSchemas(props.schemas)
+	})
 	watch(
 		() => props,
 		() => {

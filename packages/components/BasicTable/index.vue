@@ -8,9 +8,9 @@ import { basicTableProps } from "./props";
 export default defineComponent({
 	name: "BasicTable",
 	props: basicTableProps,
-	setup(props, { slots }) {
-		const ctx = useBasicTableHelper(props);
-        
+	setup(props, ctx) {
+		const tablePropsHelper = useBasicTableHelper(props);
+		const {} = tableRenderHelper(props, ctx);
 	},
 });
 </script>
