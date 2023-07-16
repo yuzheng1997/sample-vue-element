@@ -17,7 +17,7 @@ export type TableSchema = {
 export type TableRenderHelperArgs = {
 	props: BasicTableProps;
 	ctx: SetupContext;
-	tablePropsHelper: ReturnType<typeof useBasicTableHelper>
+	tablePropsCtx: ReturnType<typeof useBasicTableHelper>;
 };
 
 export type Layout = "fixed" | "auto";

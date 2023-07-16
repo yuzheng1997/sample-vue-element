@@ -4,9 +4,10 @@ import {
 	TableSchema,
 } from "@sample-vue-element/types/basicTable";
 import { ElTable, ElTableColumn } from "element-plus";
+import { VNode } from "vue";
 
-const tableRenderHelper = ({props, ctx, tablePropsHelper}: TableRenderHelperArgs) => {
-	const { editTable } = props;
+ export const tableRenderHelper = ({props, ctx, tablePropsCtx}: TableRenderHelperArgs) => {
+	const { editTable, showIndex, selection } = props;
 	const { slots } = ctx;
 	// 渲染单个列
 	const renderColumn = (schema: TableSchema) => {
@@ -29,6 +30,14 @@ const tableRenderHelper = ({props, ctx, tablePropsHelper}: TableRenderHelperArgs
 			</>
 		);
 	};
+	const addIndexColumn = (nodes: VNode[]) => {
+		if (!showIndex) return nodes
+		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes]
+	}
+	const addSelectionColumn = (nodes: VNode[]) => {
+		if (!selection) return nodes
+		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes]
+	}
 	// 渲染列内容
 	const getColumnContentRender = (schema: TableSchema) => {
 		const { field } = schema;

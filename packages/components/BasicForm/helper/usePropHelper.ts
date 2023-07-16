@@ -5,7 +5,6 @@ import type {
 import {
 	_isBlock,
 	getProps,
-	resolveFunctionAble,
 } from "@sample-vue-element/utils/helper";
 import { formPropKeys } from "../props";
 import { computed, ref, ComponentPublicInstance, watch } from "vue";

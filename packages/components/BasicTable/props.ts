@@ -100,10 +100,8 @@ export const basicTableProps = {
 	...tableProps,
 	// 显示序号
 	showIndex: Boolean as PropType<boolean>,
-
 	selection: {
-		type: Boolean as PropType<boolean>,
-		default: false,
+		type: String as PropType<'multiple' | 'single'>
 	},
 	// 显示分页
 	pagination: {
