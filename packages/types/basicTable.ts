@@ -1,7 +1,11 @@
 import { Component, ExtractPropTypes, SetupContext } from "vue";
 import { basicTableProps } from "@sample-vue-element/components/BasicTable/props";
-import { TableColumnCtx, TableProps } from "element-plus/es/components";
-import { useBasicTableHelper } from "../components/BasicTable/helper";
+import {
+	ElTable,
+	TableColumnCtx,
+	TableProps,
+} from "element-plus/es/components";
+import { useBasicTableHelper, useSourceData } from "../components/BasicTable/helper";
 export type TableSchema = {
 	tag?: string | Component;
 	type?: string;
@@ -14,13 +18,15 @@ export type TableSchema = {
 	required?: boolean;
 };
 
-export type TableRenderHelperArgs = {
-	props: BasicTableProps;
-	ctx: SetupContext;
-	tablePropsHelper: ReturnType<typeof useBasicTableHelper>
-};
-
 export type Layout = "fixed" | "auto";
 export type BasicTableProps = ExtractPropTypes<typeof basicTableProps>;
 export type ElTableProps = inferInstance<TableProps<Recordable>>;
 export type TableColumnProps = inferInstance<TableColumnCtx<any>>;
+export type BasicTableInstance = InstanceType<typeof ElTable>;
+export type TableSourceData = ReturnType<typeof useSourceData>
+export type TableHelperArgs = {
+	props: BasicTableProps;
+	ctx: SetupContext;
+	tablePropsHelper: ReturnType<typeof useBasicTableHelper>;
+	tableSourceData?: TableSourceData;
+};

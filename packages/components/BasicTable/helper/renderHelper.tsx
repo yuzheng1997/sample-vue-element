@@ -1,28 +1,50 @@
-import { getTipRender } from "@sample-vue-element/components/common/controlRender";
 import {
-	TableRenderHelperArgs,
+	getContentRender,
+	getTipRender,
+} from "@sample-vue-element/components/common/controlRender";
+import {
+	TableHelperArgs,
 	TableSchema,
+	TableSourceData,
 } from "@sample-vue-element/types/basicTable";
-import { ElTable, ElTableColumn } from "element-plus";
+import {
+	resolveFunctionAble,
+	resolveRules,
+} from "@sample-vue-element/utils/helper";
+import { ElForm, ElFormItem, ElTable, ElTableColumn } from "element-plus";
 
-const tableRenderHelper = ({props, ctx, tablePropsHelper}: TableRenderHelperArgs) => {
+export const tableRenderHelper = ({
+	props,
+	ctx,
+	tablePropsHelper,
+	tableSourceData,
+}: TableHelperArgs) => {
 	const { editTable } = props;
 	const { slots } = ctx;
+	const { getSchemas, registerFormRef, registerTableRef } = tablePropsHelper;
 	// 渲染单个列
-	const renderColumn = (schema: TableSchema) => {
-		return (
+	const tableContentRender = () => {
+		return getSchemas.value.map((schema) => (
 			<ElTableColumn>
 				{{
 					default: getColumnContentRender(schema),
 					header: getColumnHeaderRender(schema),
 				}}
 			</ElTableColumn>
-		);
+		));
 	};
+	// 选择列
+	const addSelectionColumn = () => {
+
+	}
+	// 新增序列号码
+	const addIndexColumn = () => {
+		
+	}
 	// 渲染表头
 	const getColumnHeaderRender = (schema: TableSchema) => {
 		const { label, tip } = schema;
-		return (
+		return () => (
 			<>
 				{tip && getTipRender(tip)}
 				{label}
@@ -36,29 +58,64 @@ const tableRenderHelper = ({props, ctx, tablePropsHelper}: TableRenderHelperArgs
 		if (schema.field && slots[schema.field]) {
 			return slots[schema.field];
 		}
-		// todo
 		if (editTable) {
+			return getTableFormItemRender(schema);
 		}
-
 		return ({ row }: Recordable) => row[field as string];
 	};
 	const getEmptyRender = () => {
-		if (slots.empty) return slots.empty
-		return () => '暂无数据'
-	}
+		if (slots.empty) return slots.empty;
+		return () => "暂无数据";
+	};
+	// 编辑表格列渲染函数
+	const getTableFormItemRender = (schema: TableSchema) => {
+		const { tag, field } = schema;
+		const resolvedRules = resolveRules(schema);
+		// 没有提供组件
+		if (!tag) {
+			return ({ row }: Recordable) => row[field as string];
+		}
+		return ({ row, $index }: Recordable) => {
+			// 控件render
+			const contentRender = getContentRender(schema, row);
+			return (
+				<ElFormItem
+					prop={`formData.${$index}.${field}`}
+					rules={resolveFunctionAble(resolvedRules, [], row)}
+				>
+					{{
+						default: contentRender,
+					}}
+				</ElFormItem>
+			);
+		};
+	};
 	// 获取表格渲染函数
-	const getTableRender = (schemas: TableSchema[]) => {
-		return <ElTable>
-			{{
-				default: () => schemas.,
-				append: slots.append,
-				empty: getEmptyRender()
-			}}
-		</ElTable>
+	const getTableRender = () => {
+		const { dataRef } = tableSourceData as TableSourceData;
+		return (
+			<ElTable ref={registerTableRef} data={dataRef.value}>
+				{{
+					default: tableContentRender,
+					append: slots.append,
+					empty: getEmptyRender(),
+				}}
+			</ElTable>
+		);
 	};
 	// 编辑表格
-	const formWrapper = () => {};
+	const formTableRender = () => {
+		const { formDataRef } = tableSourceData as TableSourceData;
+		return (
+			<ElForm ref={registerFormRef} model={formDataRef.value}>
+				{{
+					default: getTableRender,
+				}}
+			</ElForm>
+		);
+	};
 	return {
 		getTableRender,
+		formTableRender,
 	};
 };

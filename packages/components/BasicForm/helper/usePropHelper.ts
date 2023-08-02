@@ -5,13 +5,12 @@ import type {
 import {
 	_isBlock,
 	getProps,
-	resolveFunctionAble,
 } from "@sample-vue-element/utils/helper";
 import { formPropKeys } from "../props";
 import { computed, ref, ComponentPublicInstance, watch } from "vue";
 import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
-const normalizeScheams = (
+const normalizeSchemas = (
 	schemas: Schema[],
 	{ disabled, colSpan: formColSpan }: Recordable
 ): Schema[] => {
@@ -53,7 +52,7 @@ export const usePropHelper = (props: BasicFormProps) => {
 	// 获取表单schemas
 	const getSchemas = computed<Schema[]>(() => {
 		const schemas = props.schemas || [];
-		return normalizeScheams(schemas, props);
+		return normalizeSchemas(schemas, props);
 	});
 	// 监听schemas和model，设置默认值
 	watch(

@@ -6,6 +6,7 @@ import { Schema } from "@sample-vue-element/types/basicForm";
 import {
 	_isPlainObject,
 	resolveFunctionAble,
+	resolveRules,
 } from "@sample-vue-element/utils/helper";
 import { ElCol, ElFormItem } from "element-plus/es";
 // 获取label render
@@ -22,39 +23,7 @@ export const getContentLabelRender = (schema: Schema, labelSuffix: string) => {
 	}
 	return () => `${label}${labelSuffix}`;
 };
-/**
- * 合并form上的rules配置和schema中的配置
- * @param schema
- * @param formRules
- * @returns
- */
-const resolveRules = (schema: Schema, formRules: Recordable | undefined) => {
-	return (model: Recordable) => {
-		const { field, rules: itemRules, required } = schema;
-		const resolvedRules = resolveFunctionAble(itemRules, [], model) as any[];
-		let result;
-		// 如果form上不存在对应的配置
-		if (
-			!formRules ||
-			!_isPlainObject(formRules) ||
-			!formRules[field as string]
-		) {
-			result = resolvedRules;
-		} else {
-			// 如果form上存在对应field的rules
-			let formItemRules = formRules[field as string] || [];
-			if (!Array.isArray(formItemRules)) {
-				formItemRules = [formItemRules];
-			}
-			// 合并验证规则
-			result = [...formItemRules, ...resolvedRules];
-		}
-		if (required) {
 
-		}
-		return result as any[];
-	};
-};
 // 获取formItem render
 export const getFormItemRender = (schema: Schema, ctx: Recordable) => {
 	const { model, props } = ctx;

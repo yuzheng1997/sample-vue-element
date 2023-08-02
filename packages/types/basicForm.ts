@@ -1,6 +1,7 @@
 import { basicProps } from "@sample-vue-element/components/BasicForm/props";
 import { Component, ExtractPropTypes } from "vue";
 import { ColSpan } from "./colSpan";
+import { ElForm } from "element-plus";
 export type Schema = {
 	tag?: string | Component;
 	type?: string;
@@ -17,3 +18,4 @@ export type Schema = {
 };
 
 export type BasicFormProps = ExtractPropTypes<typeof basicProps>;
+export type BasicFormInstance = InstanceType<typeof ElForm>

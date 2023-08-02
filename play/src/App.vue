@@ -1,9 +1,9 @@
 <script setup>
-import LayoutDemo from './components/FormDemo.vue'
+import TableDemo from './components/TableDemo.vue'
 </script>
 
 <template>
-<LayoutDemo></LayoutDemo>
+<TableDemo></TableDemo>
 </template>
 
 <style scoped>
