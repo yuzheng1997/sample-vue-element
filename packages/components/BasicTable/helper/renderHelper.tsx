@@ -12,6 +12,7 @@ import {
 	resolveRules,
 } from "@sample-vue-element/utils/helper";
 import { ElForm, ElFormItem, ElTable, ElTableColumn } from "element-plus";
+import { VNode } from "vue";
 
 export const tableRenderHelper = ({
 	props,
@@ -19,7 +20,7 @@ export const tableRenderHelper = ({
 	tablePropsHelper,
 	tableSourceData,
 }: TableHelperArgs) => {
-	const { editTable } = props;
+	const { editTable, showIndex, selection } = props;
 	const { slots } = ctx;
 	const { getSchemas, registerFormRef, registerTableRef } = tablePropsHelper;
 	// 渲染单个列
@@ -33,14 +34,6 @@ export const tableRenderHelper = ({
 			</ElTableColumn>
 		));
 	};
-	// 选择列
-	const addSelectionColumn = () => {
-
-	}
-	// 新增序列号码
-	const addIndexColumn = () => {
-		
-	}
 	// 渲染表头
 	const getColumnHeaderRender = (schema: TableSchema) => {
 		const { label, tip } = schema;
@@ -50,6 +43,14 @@ export const tableRenderHelper = ({
 				{label}
 			</>
 		);
+	};
+	const addIndexColumn = (nodes: VNode[]) => {
+		if (!showIndex) return nodes;
+		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes];
+	};
+	const addSelectionColumn = (nodes: VNode[]) => {
+		if (!selection) return nodes;
+		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes];
 	};
 	// 渲染列内容
 	const getColumnContentRender = (schema: TableSchema) => {

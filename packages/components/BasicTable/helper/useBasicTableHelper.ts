@@ -60,6 +60,6 @@ export const useBasicTableHelper = (props: BasicTableProps) => {
 		registerTableRef,
 		tableProps,
 		basicTableProps,
-		registerFormRef
+		registerFormRef,
 	};
 };
