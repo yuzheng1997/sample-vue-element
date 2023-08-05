@@ -1,0 +1,23 @@
+.tablePagination {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    margin-top: 5px;
+}
+
+.tableHeader {
+    display: flex;
+    height: 36px;
+    .headerLeft {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: left;
+    }
+    .headerRight {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: right;
+    }
+}

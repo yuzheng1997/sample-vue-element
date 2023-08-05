@@ -18,8 +18,14 @@ const tableProps = {
 		type: Boolean,
 		default: true,
 	},
-	stripe: Boolean,
-	border: Boolean,
+	stripe: {
+		type: Boolean,
+		default: true,
+	},
+	border: {
+		type: Boolean,
+		default: true,
+	},
 	rowKey: [String, Function] as PropType<TableProps<DefaultRow>["rowKey"]>,
 	showHeader: {
 		type: Boolean,
@@ -100,12 +106,13 @@ export const basicTableProps = {
 	...tableProps,
 	// 显示序号
 	showIndex: Boolean as PropType<boolean>,
+	fieldKey: String as PropType<string>,
 	selection: {
 		type: String as PropType<'multiple' | 'single'>
 	},
 	// 显示分页
 	pagination: {
-		type: Boolean as PropType<boolean>,
+		type: [Boolean, Object] as PropType<boolean | Recordable>,
 		default: true,
 	},
 	// 接口

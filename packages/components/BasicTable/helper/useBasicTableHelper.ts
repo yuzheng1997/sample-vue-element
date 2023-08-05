@@ -15,14 +15,24 @@ const normalizeSchemas = (
 	if (!schemas) return [];
 	return schemas.map((schema) => {
 		// 保留form整个表单禁用的能力
-		const { field, prop, disabled: itemDisabeld, ...rest } = schema;
+		const {
+			field,
+			prop,
+			disabled: itemDisabeld,
+			align,
+			headerAlign,
+			...rest
+		} = schema;
 		return {
+			align: align || "center",
+			headerAlign: headerAlign || "center",
 			field,
 			prop: prop || field,
 			...rest,
 		};
 	});
 };
+
 export const useBasicTableHelper = (props: BasicTableProps) => {
 	// 表单实例
 	const tableRef = ref<BasicTableInstance | null>(null);

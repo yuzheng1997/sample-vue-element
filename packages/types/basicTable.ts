@@ -7,6 +7,7 @@ import {
 } from "element-plus/es/components";
 import {
 	useBasicTableHelper,
+	usePagination,
 	useSourceData,
 } from "../components/BasicTable/helper";
 export type TableSchema = {
@@ -14,11 +15,14 @@ export type TableSchema = {
 	type?: string;
 	label?: string;
 	field: string;
+	align?: "left" | "center" | "right";
+	headerAlign?: "left" | "center" | "right";
 	prop?: string;
 	disabled?: FunctionAble<boolean>;
 	rules?: FunctionAble<Array<any>>;
 	tip?: string;
 	required?: boolean;
+	[others: string]: any;
 };
 
 export type TableRenderHelperArgs = {
@@ -33,9 +37,11 @@ export type ElTableProps = inferInstance<TableProps<Recordable>>;
 export type TableColumnProps = inferInstance<TableColumnCtx<any>>;
 export type BasicTableInstance = InstanceType<typeof ElTable>;
 export type TableSourceData = ReturnType<typeof useSourceData>;
+export type PaginationHelper = ReturnType<typeof usePagination>;
 export type TableHelperArgs = {
 	props: BasicTableProps;
 	ctx: SetupContext;
 	tablePropsHelper: ReturnType<typeof useBasicTableHelper>;
 	tableSourceData?: TableSourceData;
+	paginationHelper?: PaginationHelper | undefined;
 };

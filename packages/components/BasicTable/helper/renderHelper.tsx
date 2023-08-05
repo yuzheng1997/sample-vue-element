@@ -3,36 +3,47 @@ import {
 	getTipRender,
 } from "@sample-vue-element/components/common/controlRender";
 import {
-	TableHelperArgs,
-	TableSchema,
-	TableSourceData,
-} from "@sample-vue-element/types/basicTable";
-import {
+	getProps,
 	resolveFunctionAble,
 	resolveRules,
 } from "@sample-vue-element/utils/helper";
 import { ElForm, ElFormItem, ElTable, ElTableColumn } from "element-plus";
 import { VNode } from "vue";
 
+import { keyOfTableColumnProps } from "../props";
+import { clone } from "lodash-es";
+import BasicPagination from "@sample-vue-element/components/BasicPagination/index.vue";
+import type {
+	TableHelperArgs,
+	TableSchema,
+	TableSourceData,
+	PaginationHelper,
+} from "@sample-vue-element/types/basicTable";
 export const tableRenderHelper = ({
 	props,
 	ctx,
 	tablePropsHelper,
 	tableSourceData,
+	paginationHelper,
 }: TableHelperArgs) => {
 	const { editTable, showIndex, selection } = props;
 	const { slots } = ctx;
-	const { getSchemas, registerFormRef, registerTableRef } = tablePropsHelper;
+	const { getSchemas, registerFormRef, registerTableRef, tableProps } =
+		tablePropsHelper;
 	// 渲染单个列
 	const tableContentRender = () => {
-		return getSchemas.value.map((schema) => (
-			<ElTableColumn>
-				{{
-					default: getColumnContentRender(schema),
-					header: getColumnHeaderRender(schema),
-				}}
-			</ElTableColumn>
-		));
+		const nodes = getSchemas.value.map((schema) => {
+			const columnProps = getProps(schema, keyOfTableColumnProps);
+			return (
+				<ElTableColumn {...columnProps}>
+					{{
+						default: getColumnContentRender(schema),
+						header: getColumnHeaderRender(schema),
+					}}
+				</ElTableColumn>
+			);
+		});
+		return addSelectionColumn(addIndexColumn(nodes));
 	};
 	// 渲染表头
 	const getColumnHeaderRender = (schema: TableSchema) => {
@@ -46,11 +57,29 @@ export const tableRenderHelper = ({
 	};
 	const addIndexColumn = (nodes: VNode[]) => {
 		if (!showIndex) return nodes;
-		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes];
+		const indexColumn = (
+			<ElTableColumn
+				type="index"
+				width="55"
+				align="center"
+				label="序号"
+			></ElTableColumn>
+		);
+		nodes.unshift(indexColumn);
+		return nodes;
 	};
 	const addSelectionColumn = (nodes: VNode[]) => {
 		if (!selection) return nodes;
-		return [<ElTableColumn type="index" width="50"></ElTableColumn>, ...nodes];
+		const selectionColumn = (
+			<ElTableColumn
+				type="selection"
+				align="center"
+				reserveSelection={true}
+				width="55"
+			></ElTableColumn>
+		);
+		nodes.unshift(selectionColumn);
+		return nodes;
 	};
 	// 渲染列内容
 	const getColumnContentRender = (schema: TableSchema) => {
@@ -93,9 +122,22 @@ export const tableRenderHelper = ({
 	};
 	// 获取表格渲染函数
 	const getTableRender = () => {
-		const { dataRef } = tableSourceData as TableSourceData;
+		const { dataRef, onSelect, onSelectAll, onSingleSelect } =
+			tableSourceData as TableSourceData;
+		const tablePropsComputed = clone(tableProps.value) as Recordable;
+		// 表格选择
+		if (selection === "multiple") {
+			tablePropsComputed.onSelect = onSelect;
+			tablePropsComputed.onSelectAll = onSelectAll;
+		} else if (selection === "single") {
+			tablePropsComputed.onSelect = onSingleSelect;
+		}
 		return (
-			<ElTable ref={registerTableRef} data={dataRef.value}>
+			<ElTable
+				{...tablePropsComputed}
+				ref={registerTableRef}
+				data={dataRef.value}
+			>
 				{{
 					default: tableContentRender,
 					append: slots.append,
@@ -108,15 +150,24 @@ export const tableRenderHelper = ({
 	const formTableRender = () => {
 		const { formDataRef } = tableSourceData as TableSourceData;
 		return (
-			<ElForm ref={registerFormRef} model={formDataRef.value}>
+			<ElForm
+				inlineMessage={true}
+				ref={registerFormRef}
+				model={formDataRef.value}
+			>
 				{{
 					default: getTableRender,
 				}}
 			</ElForm>
 		);
 	};
+	const cratePagination = () => {
+		const { paginationParams } = paginationHelper as PaginationHelper;
+		return () => <BasicPagination {...paginationParams}></BasicPagination>;
+	};
 	return {
 		getTableRender,
 		formTableRender,
+		cratePagination: cratePagination(),
 	};
 };

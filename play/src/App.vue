@@ -1,10 +1,9 @@
 <script setup>
-import TableDemo from './components/TableDemo.vue'
+import TableDemo from "./components/TableDemo.vue";
 </script>
 
 <template>
-<TableDemo></TableDemo>
+	<TableDemo></TableDemo>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
