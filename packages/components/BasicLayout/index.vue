@@ -1,8 +1,8 @@
 <script lang="tsx" name="BasicLayout">
 import { defineComponent } from "vue";
 import { basicProps, rowPropKeys } from "./props";
-import { ElRow } from "element-plus/es";
-import { getProps } from "@sample-vue-element/utils/helper/propsHelper";
+import { ElRow } from "element-plus";
+import { getProps } from "@sample-vue-element/utils/propsHelper";
 import { createColRender } from "./helper/colRender";
 import { useResizeHelper } from "./helper/useResizeHelper";
 export default defineComponent({

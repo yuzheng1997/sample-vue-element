@@ -1,14 +1,13 @@
+import { getProps } from "@sample-vue-element/utils";
+import { ref, ComponentPublicInstance, watch, computed } from "vue";
+import { keyOfBasicTableProps, keyOfTableProps } from "../props";
+import { BasicFormInstance } from "@sample-vue-element/types/basicForm";
 import {
 	BasicTableInstance,
 	BasicTableProps,
 	ElTableProps,
 	TableSchema,
 } from "@sample-vue-element/types/basicTable";
-import { getProps } from "@sample-vue-element/utils/helper";
-import { ref, ComponentPublicInstance, watch, computed } from "vue";
-import { keyOfBasicTableProps, keyOfTableProps } from "../props";
-import { BasicFormInstance } from "@sample-vue-element/types/basicForm";
-
 const normalizeSchemas = (
 	schemas: TableSchema[] | undefined
 ): TableSchema[] => {
@@ -51,6 +50,25 @@ export const useBasicTableHelper = (props: BasicTableProps) => {
 	) => {
 		formRef.value = ref as BasicFormInstance;
 	};
+	const valideEditTable = () => {
+		formRef.value
+			?.validate()
+			.then(() => {
+				return {
+					result: true,
+				};
+			})
+			.catch((message: string) => {
+				return {
+					result: false,
+					message,
+				};
+			});
+	};
+	// 表单重置
+	const resetFields = () => {
+		formRef.value?.resetFields();
+	};
 	const getSchemas = computed(() => {
 		return normalizeSchemas(props.schemas);
 	});
@@ -71,5 +89,7 @@ export const useBasicTableHelper = (props: BasicTableProps) => {
 		tableProps,
 		basicTableProps,
 		registerFormRef,
+		resetFields,
+		valideEditTable,
 	};
 };

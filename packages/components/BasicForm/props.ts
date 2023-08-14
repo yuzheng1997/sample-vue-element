@@ -1,4 +1,4 @@
-import { ColSpan } from "@sample-vue-element/types";
+import { ColSpan } from "@sample-vue-element/types/colSpan";
 import { Schema } from "@sample-vue-element/types/basicForm";
 import { formProps, formItemProps } from "element-plus";
 import { PropType } from "vue";

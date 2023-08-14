@@ -1,4 +1,4 @@
-import { BasicLayoutPorps } from "@sample-vue-element/types";
+import { BasicLayoutPorps } from "@sample-vue-element/types/colSpan";
 import { debounce } from "lodash-es";
 import { ComponentPublicInstance, onMounted, onUnmounted, ref } from "vue";
 export const useResizeHelper = (props: BasicLayoutPorps) => {

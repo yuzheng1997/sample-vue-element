@@ -1,7 +1,11 @@
 import { isFunction, isUndefined, pickBy } from "lodash-es";
-import { _isPlainObject } from "./typeValide";
-import { TableSchema } from "@sample-vue-element/types/basicTable";
+import { TableSchema } from "../types/basicTable";
 import { Schema } from "@sample-vue-element/types/basicForm";
+import { isPlainObject } from "lodash-es";
+
+const _isPlainObject = (val: any): val is object => {
+	return isPlainObject(val);
+};
 
 export const getProps = (
 	source: Record<string, any>,
@@ -22,7 +26,7 @@ export const resolveFunctionAble = <T>(
 	if (isFunction(fn)) {
 		const res = fn(...args);
 		if (isUndefined(res)) return result;
-		return res
+		return res;
 	} else if (fn) {
 		return fn as T;
 	}
@@ -35,7 +39,10 @@ export const resolveFunctionAble = <T>(
  * @param formRules
  * @returns
  */
-export const resolveRules = (schema: Schema | TableSchema, formRules?: Recordable) => {
+export const resolveRules = (
+	schema: Schema | TableSchema,
+	formRules?: Recordable
+) => {
 	return (model: Recordable) => {
 		const { field, rules: itemRules, required } = schema;
 		const resolvedRules = resolveFunctionAble(itemRules, [], model) as any[];
@@ -57,7 +64,6 @@ export const resolveRules = (schema: Schema | TableSchema, formRules?: Recordabl
 			result = [...formItemRules, ...resolvedRules];
 		}
 		if (required) {
-
 		}
 		return result as any[];
 	};

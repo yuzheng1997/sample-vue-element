@@ -1,14 +1,20 @@
 <template>
-	<BasicTable
+	<div style="height: 50%;">
+		<BasicTable
 		selection="single"
 		show-index
 		row-key="a"
 		edit-table
+		auto-height
 		:pagination="true"
 		:data="data"
 		:schemas="schemas"
 	>
 	</BasicTable>
+	</div>
+
+
+
 </template>
 
 <script setup lang="ts">

@@ -1,15 +1,19 @@
 {
-  "name": "@sample-vue-element/utils",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "lodash-es": "^4.17.21"
-  }
+	"name": "@sample-vue-element/utils",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "index.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"peerDependencies": {
+		"lodash-es": "^4.17.21"
+	},
+	"dependencies": {
+		"lodash-es": "^4.17.21"
+	}
 }

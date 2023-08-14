@@ -29,10 +29,8 @@ export default defineComponent({
 			});
 		const { editTable } = props;
 		const { headerRight, headerLeft } = ctx.slots;
-		console.log(headerLeft, headerRight);
-		
 		return () => (
-			<div>
+			<div class="STableWrapper">
 				{(headerLeft || headerRight) && (
 					<div class="tableHeader">
 						{headerLeft && <div class="headerLeft">{headerLeft?.()}</div>}

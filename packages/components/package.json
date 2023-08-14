@@ -1,24 +1,30 @@
 {
-  "name": "@sample-vue-element/components",
-  "version": "1.0.0",
-  "description": "",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@sample-vue-element/utils": "workspace:^1.0.0",
-    "@vue/runtime-core": "^3.3.4",
-    "@vue/shared": "^3.3.4",
-    "lodash-es": "^4.17.21",
-    "sass": "^1.64.2",
-    "vue": "^3.2.36"
-  },
-  "devDependencies": {
-    "@types/lodash-es": "^4.17.7"
-  }
+	"name": "@sample-vue-element/components",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"peerDependencies": {
+		"vue": "^3.2.36",
+		"lodash-es": "^4.17.21",
+		"@vue/shared": "^3.3.4",
+		"@vue/runtime-core": "^3.3.4",
+		"sass": "^1.64.2"
+	},
+	"dependencies": {
+		"@vue/runtime-core": "^3.3.4",
+		"@vue/shared": "^3.3.4",
+		"lodash-es": "^4.17.21",
+		"sass": "^1.64.2",
+		"vue": "^3.2.36"
+	},
+	"devDependencies": {
+		"@types/lodash-es": "^4.17.7"
+	}
 }

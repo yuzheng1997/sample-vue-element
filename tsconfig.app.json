@@ -12,6 +12,8 @@
 		"play/**/*",
 		"packages/**/*",
 		"packages/**/*.vue",
+		"packages/**/*.ts",
+		"packages/**/*.d.ts",
 		"packages/utils/**/*",
 		"types/**/*.d.ts",
 		"node_modules/@types/**/*.d.ts"

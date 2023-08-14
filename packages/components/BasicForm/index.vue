@@ -1,38 +1,35 @@
 <script lang="tsx">
-import { ElForm } from "element-plus/es";
+import { ElForm } from "element-plus";
 import { basicProps } from "./props";
-import { defineComponent, renderList } from "vue";
+import { defineComponent, provide, renderList } from "vue";
 import { usePropHelper, getFormItemRender } from "./helper";
 import BasicLayout from "../BasicLayout/index.vue";
+import { BasicFormCtx } from "../common";
 
 export default defineComponent({
 	name: "BasicForm",
 	props: basicProps,
 	inheritAttrs: false,
-	setup(props, { expose, attrs }) {
+	setup(props, { expose, attrs, slots }) {
 		const ctx = usePropHelper(props);
 		const {
 			registerFormRef,
 			formProps,
-			resetFields,
-			validate,
-			clearValidate,
-			toggleCollapsed,
 			collapsed,
 			getSchemas,
 			model,
 		} = ctx;
 		expose({
-			resetFields,
-			validate,
-			clearValidate,
-			toggleCollapsed,
+			...ctx,
 		});
+
+		provide(BasicFormCtx, ctx);
+		console.log(slots, "slots");
 		return () => (
 			<ElForm ref={registerFormRef} {...formProps.value} model={model.value}>
 				<BasicLayout {...attrs} collapsed={collapsed.value}>
 					{renderList(getSchemas.value, (schema) => {
-						return getFormItemRender(schema, ctx)();
+						return getFormItemRender(schema, ctx, slots)();
 					})}
 				</BasicLayout>
 			</ElForm>

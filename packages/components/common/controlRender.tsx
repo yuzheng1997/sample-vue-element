@@ -1,8 +1,5 @@
 import { Schema } from "@sample-vue-element/types/basicForm";
-import {
-	getProps,
-	resolveFunctionAble,
-} from "@sample-vue-element/utils/helper";
+import { getProps, resolveFunctionAble } from "@sample-vue-element/utils";
 import type { Component } from "vue";
 import { resolveComponent, toRaw } from "vue";
 import infoSvg from "./info.svg";
@@ -29,6 +26,7 @@ export const getContentRender = (
 	model: Record<string, any>
 ) => {
 	const { field, tag, disabled } = schema;
+	if (!tag) return () => "";
 	const ComponentTag = getComponent(tag as string) as any;
 	const propKeys = getComponentAttrs(ComponentTag, schema);
 	return () => (

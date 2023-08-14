@@ -1,11 +1,10 @@
 <template>
-	<BasicForm ref="basicForm" :schemas="schemas">
-	</BasicForm>
+	<BasicForm ref="basicForm" :schemas="schemas"> </BasicForm>
 	<button @click="toggle">切换</button>
 </template>
 
 <script setup lang="ts">
-import BasicForm from "@sample-vue-element/components/BasicForm/index.vue";
+import BasicForm from "@sample-vue-element/components/BasicSearchForm/index.vue";
 import { ElInput } from "element-plus/es";
 import { ref } from "vue";
 const basicForm = ref(null);

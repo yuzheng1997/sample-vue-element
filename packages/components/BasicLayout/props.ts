@@ -1,5 +1,5 @@
-import { ColSpan } from "@sample-vue-element/types";
-import { colProps, rowProps } from "element-plus/es";
+import { ColSpan } from "@sample-vue-element/types/colSpan";
+import { colProps, rowProps } from "element-plus";
 import { PropType } from "vue";
 
 export const basicProps = {
@@ -9,16 +9,16 @@ export const basicProps = {
 	},
 	collapsable: {
 		type: Boolean as PropType<boolean>,
-		default: false
+		default: false,
 	},
 	alwaysShowLine: {
 		type: Number as PropType<number>,
-		default: 2
+		default: 2,
 	},
 	collapsed: {
 		type: Boolean as PropType<boolean>,
-		default: false
-	}
+		default: false,
+	},
 };
 
 export const rowPropKeys = Object.keys(rowProps);

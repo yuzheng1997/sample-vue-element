@@ -1,10 +1,10 @@
-import { Component, ExtractPropTypes, SetupContext } from "vue";
+import { Component, ExtractPropTypes, SetupContext, VNode } from "vue";
 import { basicTableProps } from "@sample-vue-element/components/BasicTable/props";
 import {
 	ElTable,
 	TableColumnCtx,
 	TableProps,
-} from "element-plus/es/components";
+} from "element-plus";
 import {
 	useBasicTableHelper,
 	usePagination,
@@ -16,6 +16,7 @@ export type TableSchema = {
 	label?: string;
 	field: string;
 	align?: "left" | "center" | "right";
+	render?: FunctionAble<JSX.Element | VNode>;
 	headerAlign?: "left" | "center" | "right";
 	prop?: string;
 	disabled?: FunctionAble<boolean>;

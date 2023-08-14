@@ -5,12 +5,12 @@ import {
 	isIfShow,
 	isShow,
 	isVFor,
-} from "@sample-vue-element/utils/helper";
+} from "@sample-vue-element/utils";
 import { ElCol } from "element-plus";
 import type { ColProps, ColSizeObject } from "element-plus";
 import { colPropKeys } from "../props";
 import { isNumber, pickBy } from "lodash-es";
-import { BasicLayoutPorps, ColSpan } from "@sample-vue-element/types";
+import { BasicLayoutPorps, ColSpan } from "@sample-vue-element/types/colSpan";
 
 const BASIC_SPAN_SIZE = 24;
 
@@ -115,8 +115,8 @@ export const createColRender = (
 			.flat()
 			.filter((node) => {
 				if (!node) return false;
-				if (!collapsable) return true
-				return !collapsed || isOverflow(node.props as any)
+				if (!collapsable) return true;
+				return !collapsed || isOverflow(node.props as any);
 			});
 	};
 };

@@ -3,7 +3,7 @@ import {
 	DefaultRow,
 	TableProps,
 } from "element-plus/es/components/table/src/table/defaults";
-import { Layout, TableSchema } from "@sample-vue-element/types/basicTable";
+import { Layout, TableSchema } from "../../types/basicTable";
 
 const tableProps = {
 	data: {
@@ -108,7 +108,7 @@ export const basicTableProps = {
 	showIndex: Boolean as PropType<boolean>,
 	fieldKey: String as PropType<string>,
 	selection: {
-		type: String as PropType<'multiple' | 'single'>
+		type: String as PropType<"multiple" | "single">,
 	},
 	// 显示分页
 	pagination: {
@@ -137,7 +137,7 @@ export const basicTableProps = {
 		type: Function,
 	},
 	extraParams: {
-		type: [Object, Function],
+		type: [Object, Function] as PropType<FunctionAble<Recordable>>,
 		default: () => ({}),
 	},
 	// 加载后自动获取数据

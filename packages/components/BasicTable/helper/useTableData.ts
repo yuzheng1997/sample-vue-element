@@ -1,12 +1,17 @@
-import { TableHelperArgs } from "@sample-vue-element/types/basicTable";
-import { ref, watchEffect, onMounted, nextTick } from "vue";
+import { TableHelperArgs } from "../../../types/basicTable.";
+import {
+	resolveFunctionAble,
+	_isBlock,
+} from "@sample-vue-element/utils";
+import { ref, watchEffect, onMounted, nextTick, inject } from "vue";
 
 export const useSourceData = ({
 	ctx,
 	props,
 	tablePropsHelper,
+	paginationHelper,
 }: TableHelperArgs) => {
-	const { data, api } = props;
+	const { data, api, extraParams } = props;
 	const { tableRef } = tablePropsHelper;
 	const { emit } = ctx;
 	const loading = ref(false);
@@ -29,7 +34,7 @@ export const useSourceData = ({
 	}
 
 	// 获取表单的数据，供查询使用
-	// const getFormCtx = inject("formCtx", () => {});
+	const getFormCtx = inject("formCtx", () => ({}));
 	// 移除选择项
 	const remove = (item: Recordable, clear = true) => {
 		const fieldKey = props.fieldKey as string;
@@ -73,7 +78,9 @@ export const useSourceData = ({
 	};
 
 	const buildParams = (): Recordable => {
-		return {};
+		const ohterParams = resolveFunctionAble(extraParams, {});
+		const formParams = resolveFunctionAble(getFormCtx, {});
+		return { ...formParams, ...ohterParams };
 	};
 
 	const fetchData = () => {
@@ -92,9 +99,10 @@ export const useSourceData = ({
 						setTableData(sourceData);
 						// 可能分页也可能不是分页
 
-						// if (pagination && rows && !isBlock(total)) {
-						// 	pageCtx.setTotal(total);
-						// }
+						if (paginationHelper && rows && !_isBlock(total)) {
+							const { setTotal } = paginationHelper;
+							setTotal(total);
+						}
 						emit("fetchSuccess", dataRef.value, total);
 					}
 				})

@@ -1,24 +1,32 @@
 import {
 	getContentRender,
 	getTipRender,
-} from "@sample-vue-element/components/common/controlRender";
-import {
+} from "@sample-vue-element/components/common";
+import type {
 	getProps,
 	resolveFunctionAble,
 	resolveRules,
-} from "@sample-vue-element/utils/helper";
+} from "@sample-vue-element/utils";
 import { ElForm, ElFormItem, ElTable, ElTableColumn } from "element-plus";
-import { VNode } from "vue";
-
+import {
+	VNode,
+	resolveDirective,
+	withDirectives,
+	ref,
+	onMounted,
+	onUnmounted,
+} from "vue";
 import { keyOfTableColumnProps } from "../props";
-import { clone } from "lodash-es";
+import { clone, throttle } from "lodash-es";
 import BasicPagination from "@sample-vue-element/components/BasicPagination/index.vue";
 import type {
 	TableHelperArgs,
 	TableSchema,
 	TableSourceData,
 	PaginationHelper,
-} from "@sample-vue-element/types/basicTable";
+	BasicTableInstance,
+} from "../../../types/basicTable.";
+
 export const tableRenderHelper = ({
 	props,
 	ctx,
@@ -26,10 +34,15 @@ export const tableRenderHelper = ({
 	tableSourceData,
 	paginationHelper,
 }: TableHelperArgs) => {
-	const { editTable, showIndex, selection } = props;
+	const { editTable, showIndex, selection, autoHeight } = props;
 	const { slots } = ctx;
-	const { getSchemas, registerFormRef, registerTableRef, tableProps } =
-		tablePropsHelper;
+	const {
+		getSchemas,
+		tableRef,
+		registerFormRef,
+		registerTableRef,
+		tableProps,
+	} = tablePropsHelper;
 	// 渲染单个列
 	const tableContentRender = () => {
 		const nodes = getSchemas.value.map((schema) => {
@@ -83,10 +96,14 @@ export const tableRenderHelper = ({
 	};
 	// 渲染列内容
 	const getColumnContentRender = (schema: TableSchema) => {
-		const { field } = schema;
+		const { field, render } = schema;
 		// 如果有插槽，则使用插槽
 		if (schema.field && slots[schema.field]) {
 			return slots[schema.field];
+		}
+		// 支持render函数
+		if (render) {
+			return (params: Recordable) => resolveFunctionAble(render, <></>, params);
 		}
 		if (editTable) {
 			return getTableFormItemRender(schema);
@@ -122,7 +139,7 @@ export const tableRenderHelper = ({
 	};
 	// 获取表格渲染函数
 	const getTableRender = () => {
-		const { dataRef, onSelect, onSelectAll, onSingleSelect } =
+		const { dataRef, onSelect, onSelectAll, onSingleSelect, loading } =
 			tableSourceData as TableSourceData;
 		const tablePropsComputed = clone(tableProps.value) as Recordable;
 		// 表格选择
@@ -132,31 +149,73 @@ export const tableRenderHelper = ({
 		} else if (selection === "single") {
 			tablePropsComputed.onSelect = onSingleSelect;
 		}
-		return (
-			<ElTable
-				{...tablePropsComputed}
-				ref={registerTableRef}
-				data={dataRef.value}
-			>
-				{{
-					default: tableContentRender,
-					append: slots.append,
-					empty: getEmptyRender(),
-				}}
-			</ElTable>
-		);
+		const vLoading = resolveDirective("loading");
+		const directives: any = [];
+		const tableContentHeight = ref<number | string>("auto");
+		// 增加loading
+		if (vLoading) {
+			directives.push([vLoading, loading.value]);
+		}
+		// 自定义高度
+		if (autoHeight) {
+			// 获取当前dom的大小
+			const throttleCb = throttle(
+				(entries: ResizeObserverEntry[]) => {
+					const [entry] = entries;
+					const {
+						contentRect: { height },
+					} = entry;
+					// todo 待修改，修改为可配置
+					tableContentHeight.value = height - 30 - 30;
+				},
+				100,
+				{
+					leading: true,
+				}
+			);
+			let parentNode: HTMLElement;
+			const resizeObserver = new ResizeObserver(throttleCb);
+			onMounted(() => {
+				parentNode = (tableRef.value as BasicTableInstance).$el
+					.parentNode as HTMLElement;
+				while (!parentNode.className.includes("STableWrapper")) {
+					parentNode = parentNode.parentNode as HTMLElement;
+				}
+				parentNode && resizeObserver.observe(parentNode);
+			});
+			onUnmounted(() => {
+				resizeObserver.unobserve(parentNode);
+			});
+		}
+		return () =>
+			withDirectives(
+				<ElTable
+					{...tablePropsComputed}
+					ref={registerTableRef}
+					data={dataRef.value}
+					height={tableContentHeight.value}
+				>
+					{{
+						default: tableContentRender,
+						append: slots.append,
+						empty: getEmptyRender(),
+					}}
+				</ElTable>,
+				directives as any
+			);
 	};
 	// 编辑表格
 	const formTableRender = () => {
 		const { formDataRef } = tableSourceData as TableSourceData;
-		return (
+		const tableRender = getTableRender();
+		return () => (
 			<ElForm
 				inlineMessage={true}
 				ref={registerFormRef}
 				model={formDataRef.value}
 			>
 				{{
-					default: getTableRender,
+					default: tableRender,
 				}}
 			</ElForm>
 		);
@@ -166,8 +225,8 @@ export const tableRenderHelper = ({
 		return () => <BasicPagination {...paginationParams}></BasicPagination>;
 	};
 	return {
-		getTableRender,
-		formTableRender,
+		getTableRender: getTableRender(),
+		formTableRender: formTableRender(),
 		cratePagination: cratePagination(),
 	};
 };

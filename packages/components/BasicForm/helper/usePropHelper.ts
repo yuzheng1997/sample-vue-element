@@ -2,12 +2,9 @@ import type {
 	BasicFormProps,
 	Schema,
 } from "@sample-vue-element/types/basicForm";
-import {
-	_isBlock,
-	getProps,
-} from "@sample-vue-element/utils/helper";
+import { _isBlock, getProps } from "@sample-vue-element/utils";
 import { formPropKeys } from "../props";
-import { computed, ref, ComponentPublicInstance, watch } from "vue";
+import { computed, ref, ComponentPublicInstance, watch, provide } from "vue";
 import { normalizeColSpan } from "@sample-vue-element/components/BasicLayout/helper/colRender";
 
 const normalizeSchemas = (
